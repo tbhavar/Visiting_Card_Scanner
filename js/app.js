@@ -162,17 +162,10 @@ const App = (() => {
         els.rawTextOutput.classList.add('hidden');
 
         try {
-            const text = await OCR.scanImage(file);
-
-            // Show raw text
-            els.rawTextOutput.textContent = text;
-            els.rawTextOutput.classList.remove('hidden');
-
-            // Parse fields
-            const parsed = Parser.parseBusinessCard(text);
-            populateForm(parsed);
+            const parsedData = await OCR.scanImage(file);
+            populateForm(parsedData);
         } catch (err) {
-            showToast('OCR failed: ' + err.message, 'error');
+            showToast('Scan failed: ' + err.message, 'error');
         }
     }
 

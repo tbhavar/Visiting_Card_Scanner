@@ -34,6 +34,7 @@ jobs:
             let content = fs.readFileSync(path, 'utf8');
             
             content = content.replace(/__AUTH_HASH__/g, process.env.AUTH_PASSWORD_HASH || '');
+            content = content.replace(/__GEMINI_API_KEY__/g, process.env.GEMINI_API_KEY || '');
             content = content.replace(/__EMAILJS_PUBLIC_KEY__/g, process.env.EMAILJS_PUBLIC_KEY || '');
             content = content.replace(/__EMAILJS_SERVICE_ID__/g, process.env.EMAILJS_SERVICE_ID || '');
             content = content.replace(/__EMAILJS_TEMPLATE_ID__/g, process.env.EMAILJS_TEMPLATE_ID || '');
@@ -46,6 +47,7 @@ jobs:
             console.log('Config updated successfully.');
         env:
           AUTH_PASSWORD_HASH: ${{ secrets.AUTH_PASSWORD_HASH }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
           EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
           EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
