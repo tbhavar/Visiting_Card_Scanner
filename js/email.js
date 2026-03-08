@@ -24,6 +24,10 @@ const EmailService = (() => {
             throw new Error('EmailJS is not configured. Please set up GitHub Secrets.');
         }
 
+        if (typeof emailjs === 'undefined') {
+            throw new Error('EmailJS failed to load. Please disable your ad-blocker or check your network connection.');
+        }
+
         init();
 
         const templateParams = {
