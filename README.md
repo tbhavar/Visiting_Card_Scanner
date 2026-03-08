@@ -5,7 +5,8 @@ A Progressive Web App that scans visiting cards using OCR, extracts contact deta
 ## Features
 
 - 📸 **Scan Cards** — Upload or photograph visiting cards
-- 🔍 **OCR Text Extraction** — Tesseract.js v6 (runs entirely in-browser)
+- 🤖 **AI-Powered OCR** — Gemini 1.5 Flash API (state-of-the-art extraction)
+- ☁️ **Cloud Sync** — Automatic backup to Google Sheets via Apps Script
 - 🧠 **Smart Field Detection** — Auto-categorizes: Name, Business, Phone(s), Email, Address
 - 📝 **Notes** — Add meeting context, event details, or memory references
 - 📇 **VCF Export** — Download vCard 3.0 files for Gmail/Google Contacts import
@@ -13,6 +14,16 @@ A Progressive Web App that scans visiting cards using OCR, extracts contact deta
 - 🔒 **Password Protected** — Admin access gate (password stored in GitHub Secrets)
 - 📱 **PWA** — Installable, works offline, responsive on all devices
 - 🚀 **GitHub Actions** — Auto-deploys to GitHub Pages on push
+
+---
+
+### Sync & Backup
+To enable the Google Sheets cloud backup feature, follow the instructions in:
+👉 [GOOGLE_SHEETS_SETUP.md](GOOGLE_SHEETS_SETUP.md)
+
+### Email Configuration
+To enable the intro email feature, follow the instructions in:
+👉 [EMAILJS_SETUP.md](EMAILJS_SETUP.md)
 
 ## Quick Start
 
