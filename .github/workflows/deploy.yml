@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Inject secrets into config.js
+        run: |
+          sed -i "s|__AUTH_HASH__|${{ secrets.AUTH_PASSWORD_HASH }}|g" js/config.js
+          sed -i "s|__EMAILJS_PUBLIC_KEY__|${{ secrets.EMAILJS_PUBLIC_KEY }}|g" js/config.js
+          sed -i "s|__EMAILJS_SERVICE_ID__|${{ secrets.EMAILJS_SERVICE_ID }}|g" js/config.js
+          sed -i "s|__EMAILJS_TEMPLATE_ID__|${{ secrets.EMAILJS_TEMPLATE_ID }}|g" js/config.js
+          sed -i "s|__OWNER_NAME__|${{ secrets.OWNER_NAME }}|g" js/config.js
+          sed -i "s|__OWNER_EMAIL__|${{ secrets.OWNER_EMAIL }}|g" js/config.js
+          sed -i "s|__OWNER_PHONE__|${{ secrets.OWNER_PHONE }}|g" js/config.js
+          sed -i "s|__OWNER_LINKEDIN__|${{ secrets.OWNER_LINKEDIN }}|g" js/config.js
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

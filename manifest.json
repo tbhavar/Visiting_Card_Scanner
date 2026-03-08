@@ -1,0 +1,32 @@
+{
+    "name": "Card Scanner — Visiting Card to Contact",
+    "short_name": "Card Scanner",
+    "description": "Scan visiting cards, extract contact details with OCR, and export as VCF files.",
+    "start_url": "/Visiting_Card_Scanner/",
+    "scope": "/Visiting_Card_Scanner/",
+    "display": "standalone",
+    "orientation": "any",
+    "theme_color": "#0f0f1a",
+    "background_color": "#0f0f1a",
+    "categories": ["productivity", "business", "utilities"],
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "icons/icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
