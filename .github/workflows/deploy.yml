@@ -42,6 +42,7 @@ jobs:
             content = content.replace(/__OWNER_EMAIL__/g, process.env.OWNER_EMAIL || '');
             content = content.replace(/__OWNER_PHONE__/g, process.env.OWNER_PHONE || '');
             content = content.replace(/__OWNER_LINKEDIN__/g, process.env.OWNER_LINKEDIN || '');
+            content = content.replace(/__GOOGLE_SHEETS_URL__/g, process.env.GOOGLE_SHEETS_URL || '');
             
             fs.writeFileSync(path, content);
             console.log('Config updated successfully.');
@@ -55,6 +56,7 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           OWNER_PHONE: ${{ secrets.OWNER_PHONE }}
           OWNER_LINKEDIN: ${{ secrets.OWNER_LINKEDIN }}
+          GOOGLE_SHEETS_URL: ${{ secrets.GOOGLE_SHEETS_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

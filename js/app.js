@@ -48,6 +48,9 @@ const App = (() => {
             searchInput: document.getElementById('search-input'),
             btnDownloadAll: document.getElementById('btn-download-all'),
             emptyState: document.getElementById('empty-state'),
+            syncControls: document.getElementById('sync-controls'),
+            btnSyncToCloud: document.getElementById('btn-sync-to-cloud'),
+            btnSyncFromCloud: document.getElementById('btn-sync-from-cloud'),
 
             toast: document.getElementById('toast'),
             toastMessage: document.getElementById('toast-message')
@@ -238,7 +241,13 @@ const App = (() => {
             return;
         }
         Storage.save(data);
-        showToast('Contact saved successfully!');
+        showToast('Contact saved locally!');
+        
+        // Auto-sync if enabled
+        if (Storage.isSheetsConfigured()) {
+            Storage.syncToSheet();
+        }
+
         clearForm();
         renderCards();
     }
@@ -374,6 +383,43 @@ const App = (() => {
         showToast('All contacts downloaded as VCF!');
     }
 
+    async function handleSyncToCloud() {
+        els.btnSyncToCloud.disabled = true;
+        els.btnSyncToCloud.textContent = 'Syncing...';
+        try {
+            await Storage.syncToSheet();
+            showToast('Backup successful!', 'success');
+        } catch (err) {
+            showToast('Backup failed: ' + err.message, 'error');
+        } finally {
+            els.btnSyncToCloud.disabled = false;
+            els.btnSyncToCloud.innerHTML = `
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Cloud Sync
+            `;
+        }
+    }
+
+    async function handleSyncFromCloud() {
+        if (!confirm('This will replace your local contacts with the data from Google Sheets. Continue?')) return;
+        
+        els.btnSyncFromCloud.disabled = true;
+        els.btnSyncFromCloud.textContent = 'Restoring...';
+        try {
+            const data = await Storage.restoreFromSheet();
+            renderCards();
+            showToast(`Restored ${data.length} contacts!`, 'success');
+        } catch (err) {
+            showToast('Restore failed: ' + err.message, 'error');
+        } finally {
+            els.btnSyncFromCloud.disabled = false;
+            els.btnSyncFromCloud.innerHTML = `
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Restore Backup
+            `;
+        }
+    }
+
     // ---- Initialize ----
     function init() {
         cacheElements();
@@ -395,9 +441,13 @@ const App = (() => {
         els.fieldEmail.addEventListener('input', updateEmailButton);
 
         // Search
-        els.searchInput.addEventListener('input', (e) => {
-            renderCards(e.target.value);
-        });
+        els.btnSyncToCloud.addEventListener('click', handleSyncToCloud);
+        els.btnSyncFromCloud.addEventListener('click', handleSyncFromCloud);
+
+        // Check if sync is enabled
+        if (Storage.isSheetsConfigured()) {
+            els.syncControls.classList.remove('hidden');
+        }
 
         // Download all
         els.btnDownloadAll.addEventListener('click', handleDownloadAll);

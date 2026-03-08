@@ -166,6 +166,18 @@
                         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
                         Saved Contacts
                     </h2>
+                    <div id="sync-controls" class="sync-controls hidden">
+                        <button id="btn-sync-to-cloud" class="btn btn-icon-text" title="Upload to Google Sheets">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Cloud Sync
+                        </button>
+                        <button id="btn-sync-from-cloud" class="btn btn-icon-text" title="Restore from Google Sheets">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                            Restore Backup
+                        </button>
+                    </div>
+                </div>
+                <div class="cards-search-header">
                     <input type="text" id="search-input" class="search-input" placeholder="Search contacts...">
                     <button id="btn-download-all" class="btn btn-secondary hidden" type="button">
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
