@@ -26,15 +26,33 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Inject secrets into config.js
-        run: |
-          sed -i "s|__AUTH_HASH__|${{ secrets.AUTH_PASSWORD_HASH }}|g" js/config.js
-          sed -i "s|__EMAILJS_PUBLIC_KEY__|${{ secrets.EMAILJS_PUBLIC_KEY }}|g" js/config.js
-          sed -i "s|__EMAILJS_SERVICE_ID__|${{ secrets.EMAILJS_SERVICE_ID }}|g" js/config.js
-          sed -i "s|__EMAILJS_TEMPLATE_ID__|${{ secrets.EMAILJS_TEMPLATE_ID }}|g" js/config.js
-          sed -i "s|__OWNER_NAME__|${{ secrets.OWNER_NAME }}|g" js/config.js
-          sed -i "s|__OWNER_EMAIL__|${{ secrets.OWNER_EMAIL }}|g" js/config.js
-          sed -i "s|__OWNER_PHONE__|${{ secrets.OWNER_PHONE }}|g" js/config.js
-          sed -i "s|__OWNER_LINKEDIN__|${{ secrets.OWNER_LINKEDIN }}|g" js/config.js
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = 'js/config.js';
+            let content = fs.readFileSync(path, 'utf8');
+            
+            content = content.replace(/__AUTH_HASH__/g, process.env.AUTH_PASSWORD_HASH || '');
+            content = content.replace(/__EMAILJS_PUBLIC_KEY__/g, process.env.EMAILJS_PUBLIC_KEY || '');
+            content = content.replace(/__EMAILJS_SERVICE_ID__/g, process.env.EMAILJS_SERVICE_ID || '');
+            content = content.replace(/__EMAILJS_TEMPLATE_ID__/g, process.env.EMAILJS_TEMPLATE_ID || '');
+            content = content.replace(/__OWNER_NAME__/g, process.env.OWNER_NAME || '');
+            content = content.replace(/__OWNER_EMAIL__/g, process.env.OWNER_EMAIL || '');
+            content = content.replace(/__OWNER_PHONE__/g, process.env.OWNER_PHONE || '');
+            content = content.replace(/__OWNER_LINKEDIN__/g, process.env.OWNER_LINKEDIN || '');
+            
+            fs.writeFileSync(path, content);
+            console.log('Config updated successfully.');
+        env:
+          AUTH_PASSWORD_HASH: ${{ secrets.AUTH_PASSWORD_HASH }}
+          EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+          EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+          EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+          OWNER_NAME: ${{ secrets.OWNER_NAME }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          OWNER_PHONE: ${{ secrets.OWNER_PHONE }}
+          OWNER_LINKEDIN: ${{ secrets.OWNER_LINKEDIN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
