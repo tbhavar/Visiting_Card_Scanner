@@ -11,7 +11,7 @@ Follow these steps to configure the email feature for your Card Scanner app.
 
 1. Go to **Email Services** → **Add New Service**
 2. Select **Gmail**
-3. Click **Connect Account** and authorize your Gmail (`catanmaybhavar@gmail.com`)
+3. Click **Connect Account** and authorize your Gmail (`your.email@gmail.com`)
 4. Click **Create Service**
 5. **Copy the Service ID** (e.g., `service_abc123`) — you'll need this for GitHub Secrets
 
@@ -83,7 +83,7 @@ Follow these steps to configure the email feature for your Card Scanner app.
 
 ## 5. Configure GitHub Secrets
 
-Go to your repository: [github.com/tbhavar/Visiting_Card_Scanner](https://github.com/tbhavar/Visiting_Card_Scanner)
+Go to your repository: [github.com/your-username/Visiting_Card_Scanner](https://github.com/your-username/Visiting_Card_Scanner)
 
 Navigate to: **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
 
@@ -95,10 +95,10 @@ Add these secrets:
 | `EMAILJS_PUBLIC_KEY` | Your Public Key from step 4 |
 | `EMAILJS_SERVICE_ID` | Your Service ID from step 2 |
 | `EMAILJS_TEMPLATE_ID` | Your Template ID from step 3 |
-| `OWNER_NAME` | `CA Tanmay Rajendra Bhavar` |
-| `OWNER_EMAIL` | `catanmaybhavar@gmail.com` |
-| `OWNER_PHONE` | `8329213804, 9168026111` |
-| `OWNER_LINKEDIN` | `https://www.linkedin.com/in/tbhavar/` |
+| `OWNER_NAME` | `Your Full Name` |
+| `OWNER_EMAIL` | `your.email@gmail.com` |
+| `OWNER_PHONE` | `+1 234 567 8900` |
+| `OWNER_LINKEDIN` | `https://www.linkedin.com/in/your-profile/` |
 
 ## 6. Enable GitHub Pages
 
@@ -108,7 +108,7 @@ Add these secrets:
 
 ## 7. Test
 
-1. Visit `https://tbhavar.github.io/Visiting_Card_Scanner/`
+1. Visit `https://your-username.github.io/Visiting_Card_Scanner/`
 2. Login with your password
 3. Scan a card → confirm details → click **Send Email**
 4. Check the recipient's inbox!

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Scan visiting cards, extract contact details with OCR, and export as VCF files for Google Contacts.">
+    <meta name="description"
+        content="Scan visiting cards, extract contact details with OCR, and export as VCF files for Google Contacts.">
     <meta name="theme-color" content="#0f0f1a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,6 +18,7 @@
 
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
     <!-- ====== AUTH OVERLAY ====== -->
@@ -55,9 +58,9 @@
             <div class="section section-upload">
                 <h2 class="section-title">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <polyline points="21 15 16 10 5 21"/>
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
                     </svg>
                     Scan Visiting Card
                 </h2>
@@ -71,11 +74,20 @@
                     </p>
                     <div class="upload-buttons">
                         <button id="upload-btn" class="btn btn-secondary" type="button">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" />
+                                <line x1="12" y1="3" x2="12" y2="15" />
+                            </svg>
                             Upload Image
                         </button>
                         <button id="camera-btn" class="btn btn-secondary" type="button">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z" />
+                                <circle cx="12" cy="13" r="4" />
+                            </svg>
                             Take Photo
                         </button>
                     </div>
@@ -102,7 +114,11 @@
                 <!-- Contact Form -->
                 <div id="contact-form" class="contact-form hidden">
                     <h3 class="section-title">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
                         Extracted Details
                     </h3>
                     <div class="form-grid">
@@ -135,21 +151,38 @@
                             <input type="text" id="field-address" placeholder="123 Street, City, State">
                         </div>
                         <div class="form-group">
-                            <label for="field-notes">Notes <span style="color:var(--text-muted);font-weight:400;text-transform:none">(how you met, event details, memory reference)</span></label>
-                            <textarea id="field-notes" placeholder="Met at TiE conference, discussed tax automation ideas..."></textarea>
+                            <label for="field-notes">Notes <span
+                                    style="color:var(--text-muted);font-weight:400;text-transform:none">(how you met,
+                                    event details, memory reference)</span></label>
+                            <textarea id="field-notes"
+                                placeholder="Met at TiE conference, discussed tax automation ideas..."></textarea>
                         </div>
                     </div>
                     <div class="form-actions">
                         <button id="btn-save" class="btn btn-primary" type="button">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" />
+                                <polyline points="17 21 17 13 7 13 7 21" />
+                                <polyline points="7 3 7 8 15 8" />
+                            </svg>
                             Save Contact
                         </button>
                         <button id="btn-download-vcf" class="btn btn-secondary" type="button">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                <polyline points="7 10 12 15 17 10" />
+                                <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
                             Download VCF
                         </button>
                         <button id="btn-send-email" class="btn btn-success" type="button" disabled>
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
                             Send Email
                         </button>
                         <button id="btn-clear" class="btn btn-secondary" type="button">
@@ -163,16 +196,31 @@
             <div class="section section-cards">
                 <div class="cards-header">
                     <h2 class="section-title" style="margin-bottom:0">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                            <path d="M16 3.13a4 4 0 010 7.75" />
+                        </svg>
                         Saved Contacts
                     </h2>
                     <div id="sync-controls" class="sync-controls hidden">
                         <button id="btn-sync-to-cloud" class="btn btn-icon-text" title="Upload to Google Sheets">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                <polyline points="17 8 12 3 7 8" />
+                                <line x1="12" y1="3" x2="12" y2="15" />
+                            </svg>
                             Cloud Sync
                         </button>
                         <button id="btn-sync-from-cloud" class="btn btn-icon-text" title="Restore from Google Sheets">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg>
                             Restore Backup
                         </button>
                     </div>
@@ -180,7 +228,12 @@
                 <div class="cards-search-header">
                     <input type="text" id="search-input" class="search-input" placeholder="Search contacts...">
                     <button id="btn-download-all" class="btn btn-secondary hidden" type="button">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
+                        </svg>
                         Download All
                     </button>
                 </div>
@@ -197,7 +250,22 @@
 
         <!-- Footer -->
         <footer class="app-footer">
-            <p>Card Scanner &copy; 2026 &mdash; Built with ❤️ by <a href="https://www.linkedin.com/in/tbhavar/" target="_blank" rel="noopener">CA Tanmay Bhavar</a></p>
+            <p>Card Scanner &copy; 2026 &mdash; Built with ❤️ by <a href="https://www.linkedin.com/in/your-profile/"
+                    target="_blank" rel="noopener">Your Name</a></p>
+            <p style="margin-top: 10px;">
+                <a href="https://buymeacoffee.com/tbhavar" target="_blank" rel="noopener"
+                    style="display: inline-flex; align-items: center; justify-content: center; background-color: #FFDD00; color: #000000; font-weight: bold; padding: 6px 12px; border-radius: 8px; text-decoration: none; font-size: 14px; gap: 8px;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                        <line x1="6" y1="1" x2="6" y2="4"></line>
+                        <line x1="10" y1="1" x2="10" y2="4"></line>
+                        <line x1="14" y1="1" x2="14" y2="4"></line>
+                    </svg>
+                    Buy me a coffee
+                </a>
+            </p>
         </footer>
     </div>
 
@@ -228,4 +296,5 @@
         }
     </script>
 </body>
+
 </html>
