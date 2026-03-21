@@ -18,11 +18,13 @@ This guide shows you how to connect your Card Scanner to a Google Sheet so your 
  */
 
 const SHEET_NAME = 'Sheet1'; // Change this if your tab is named differently
-const AUTH_PASSWORD_HASH = 'YOUR_AUTH_PASSWORD_HASH_HERE'; // PASTE YOUR SECRET HASH HERE
+const AUTH_PASSWORD_HASH = 'cf28d56f01623c011bf817b6cbc103fc0eff415f446ac1fb05baf76e633bb016'; // PRE-FILLED HASH
 
 function doPost(e) {
   try {
-    const postData = e.postData.contents;
+    const postData = (e && e.postData && e.postData.contents) ? e.postData.contents : null;
+    if (!postData) throw new Error("No data received in post body");
+    
     const request = JSON.parse(postData);
     const { action, token, data } = request;
 

@@ -78,7 +78,7 @@ const Storage = (() => {
             const response = await fetch(APP_CONFIG.GOOGLE_SHEETS_URL, {
                 method: 'POST',
                 mode: 'no-cors', // Use no-cors as Apps Script redirects often cause CORS issues
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ 
                     action: 'sync_to_sheet',
                     token: authHash,
