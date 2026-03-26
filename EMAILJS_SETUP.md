@@ -30,6 +30,12 @@ Follow these steps to configure the email feature for your Card Scanner app.
   <!-- Header Section -->
   <div style="background: #0f172a; background: radial-gradient(circle at 10% 10%, #2563eb 0%, #0f172a 100%); padding: 45px 30px; text-align: center; position: relative;">
     <div style="position: absolute; top:0; left:0; right:0; height: 100%; opacity: 0.1; background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+    
+    <!-- Profile Photo -->
+    <div style="margin-bottom: 20px; position: relative; z-index: 1;">
+      <img src="{{photo_url}}" alt="{{from_name}}" style="width: 100px; height: 100px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.2); object-fit: cover; box-shadow: 0 8px 16px rgba(0,0,0,0.2);">
+    </div>
+
     <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 800; letter-spacing: -1px; line-height: 1.2; text-shadow: 0 4px 10px rgba(0,0,0,0.3);">Great connecting with you!</h1>
     <div style="display: inline-block; margin-top: 15px; padding: 6px 16px; background: rgba(255,255,255,0.1); border-radius: 100px; backdrop-filter: blur(5px);">
         <p style="color: #60a5fa; margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">{{owner_title}}</p>

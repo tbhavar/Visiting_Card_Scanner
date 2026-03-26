@@ -40,6 +40,7 @@ const EmailService = (() => {
             website_url: APP_CONFIG.OWNER_WEBSITE,
             owner_title: APP_CONFIG.OWNER_TITLE,
             vcf_url: APP_CONFIG.OWNER_VCF_URL,
+            photo_url: APP_CONFIG.OWNER_PHOTO_URL,
             meeting_notes: contact.notes || 'our recent meeting',
             business_name: contact.businessName || ''
         };
