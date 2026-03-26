@@ -51,6 +51,11 @@ const App = (() => {
             syncControls: document.getElementById('sync-controls'),
             btnSyncToCloud: document.getElementById('btn-sync-to-cloud'),
             btnSyncFromCloud: document.getElementById('btn-sync-from-cloud'),
+            
+            fieldShareName: document.getElementById('share-name'),
+            fieldShareEmail: document.getElementById('share-email'),
+            fieldShareNotes: document.getElementById('share-notes'),
+            btnShareNow: document.getElementById('btn-share-now'),
 
             toast: document.getElementById('toast'),
             toastMessage: document.getElementById('toast-message')
@@ -299,6 +304,59 @@ const App = (() => {
         } finally {
             els.btnSendEmail.disabled = false;
             els.btnSendEmail.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Send Email';
+        }
+    }
+
+    async function handleShareMyCard() {
+        const name = els.fieldShareName.value.trim();
+        const email = els.fieldShareEmail.value.trim();
+        const notes = els.fieldShareNotes.value.trim();
+
+        if (!email) {
+            showToast('Please enter a recipient email.', 'error');
+            els.fieldShareEmail.focus();
+            return;
+        }
+
+        // Basic email regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showToast('Please enter a valid email address.', 'error');
+            els.fieldShareEmail.focus();
+            return;
+        }
+
+        const data = {
+            personName: name,
+            email: email,
+            notes: notes || 'Nice meeting you today!',
+            businessName: '' // No business name for quick share
+        };
+
+        // If offline, add to outbox
+        if (!navigator.onLine) {
+            await Storage.addToOutbox(data);
+            showToast('Offline: Added to email outbox (will send when online).');
+            els.fieldShareName.value = '';
+            els.fieldShareEmail.value = '';
+            return;
+        }
+
+        els.btnShareNow.disabled = true;
+        const originalHTML = els.btnShareNow.innerHTML;
+        els.btnShareNow.innerHTML = '<span class="spinner"></span> Sending...';
+
+        try {
+            await EmailService.sendIntroductionEmail(data);
+            showToast('Digital card sent successfully!');
+            // Clear fields on success
+            els.fieldShareName.value = '';
+            els.fieldShareEmail.value = '';
+        } catch (err) {
+            showToast('Failed to send: ' + err.message, 'error');
+        } finally {
+            els.btnShareNow.disabled = false;
+            els.btnShareNow.innerHTML = originalHTML;
         }
     }
 
@@ -566,6 +624,9 @@ const App = (() => {
         els.btnDownloadVcf.addEventListener('click', handleDownloadVcf);
         els.btnSendEmail.addEventListener('click', handleSendEmail);
         els.btnClear.addEventListener('click', clearForm);
+
+        // Quick Share
+        els.btnShareNow.addEventListener('click', handleShareMyCard);
 
         // Email field change
         els.fieldEmail.addEventListener('input', updateEmailButton);

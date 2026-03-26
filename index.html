@@ -191,6 +191,42 @@
                 </div>
             </div>
 
+            <!-- Quick Share Section -->
+            <div class="section section-quick-share">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                    Quick Share My Card
+                </h2>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="share-name">Recipient Name</label>
+                        <input type="text" id="share-name" placeholder="e.g. John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="share-email">Recipient Email</label>
+                        <input type="email" id="share-email" placeholder="e.g. john@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="share-notes">Meeting Context</label>
+                        <input type="text" id="share-notes" placeholder="e.g. Nashik Conference" value="Nice meeting you today!">
+                    </div>
+                </div>
+                
+                <div class="form-actions" style="margin-top: 1.25rem;">
+                    <button id="btn-share-now" class="btn btn-primary btn-full" type="button">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13" />
+                            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                        </svg>
+                        Send My Card
+                    </button>
+                </div>
+            </div>
+
             <!-- Saved Cards Section -->
             <div class="section section-cards">
                 <div class="cards-header">

@@ -937,3 +937,22 @@ body::before {
         align-items: stretch;
     }
 }
+/* ---- Quick Share Section ---- */
+.section-quick-share {
+    border-left: 4px solid var(--accent);
+    background: linear-gradient(to right, rgba(108, 99, 255, 0.05), transparent);
+}
+
+@media (min-width: 768px) {
+    .section-quick-share .form-grid {
+        grid-template-columns: 1fr 1fr 1.5fr;
+    }
+}
+
+#btn-share-now svg {
+    transition: transform 0.3s ease;
+}
+
+#btn-share-now:hover svg {
+    transform: translate(2px, -2px) scale(1.1);
+}
