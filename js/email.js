@@ -44,6 +44,8 @@ const EmailService = (() => {
             linkedin_url: sanitizeConfigValue(APP_CONFIG.OWNER_LINKEDIN),
             website_url: sanitizeConfigValue(APP_CONFIG.OWNER_WEBSITE),
             owner_title: sanitizeConfigValue(APP_CONFIG.OWNER_TITLE),
+            owner_address: sanitizeConfigValue(APP_CONFIG.OWNER_ADDRESS),
+            map_url: sanitizeConfigValue(APP_CONFIG.OWNER_MAP_URL),
             vcf_url: sanitizeConfigValue(APP_CONFIG.OWNER_VCF_URL),
             photo_url: sanitizeConfigValue(APP_CONFIG.OWNER_PHOTO_URL),
             meeting_notes: contact.notes || 'our recent meeting',

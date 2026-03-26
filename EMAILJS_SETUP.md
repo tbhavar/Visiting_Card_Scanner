@@ -55,7 +55,7 @@ Follow these steps to configure the email feature for your Card Scanner app.
     <!-- Contact Info Card -->
     <div style="background: #f8fafc; border-radius: 20px; padding: 30px; margin: 35px 0; border: 1px solid #e2e8f0; position: relative; overflow: hidden;">
       <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #2563eb;"></div>
-      <h3 style="color: #0f172a; margin: 0 0 20px 0; font-size: 19px; font-weight: 700;">My Office Address & Details</h3>
+      <h3 style="color: #0f172a; margin: 0 0 20px 0; font-size: 19px; font-weight: 700;">My Contact details</h3>
       
       <div style="display: grid; gap: 12px; font-size: 16px; color: #334155;">
         <p style="margin: 8px 0;"><strong>Name:</strong> {{from_name}}</p>
@@ -72,6 +72,9 @@ Follow these steps to configure the email feature for your Card Scanner app.
       </a>
       <a href="{{vcf_url}}" style="display: block; background: #1e293b; color: #ffffff; padding: 16px 45px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 16px; width: 240px; box-shadow: 0 10px 20px rgba(30, 41, 59, 0.15); transition: transform 0.2s ease;">
         Save Contact (VCF)
+      </a>
+      <a href="{{map_url}}" style="display: block; background: #ffffff; color: #1e293b; padding: 14px 45px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 15px; width: 240px; border: 2px solid #e2e8f0; transition: all 0.2s ease;">
+        View Office on Maps 📍
       </a>
     </div>
     

@@ -42,6 +42,8 @@ jobs:
             content = content.replace(/__OWNER_EMAIL__/g, process.env.OWNER_EMAIL || '');
             content = content.replace(/__OWNER_PHONE__/g, process.env.OWNER_PHONE || '');
             content = content.replace(/__OWNER_LINKEDIN__/g, process.env.OWNER_LINKEDIN || '');
+            content = content.replace(/__OWNER_ADDRESS__/g, process.env.OWNER_ADDRESS || 'Office No 305, Aakar ProBiz, Gangapur Road, Swargiya Sitamai Sawliram Kale Marg, Kale Nagar, Nashik, Maharashtra 422013');
+            content = content.replace(/__OWNER_MAP_URL__/g, process.env.OWNER_MAP_URL || 'https://share.google/WK8m9gbHAEqzOW1sg');
             content = content.replace(/__OWNER_WEBSITE__/g, process.env.OWNER_WEBSITE || 'tbhavar.in');
             content = content.replace(/__OWNER_TITLE__/g, process.env.OWNER_TITLE || 'Chartered Accountant | Corporate Law, GST & Income Tax Advisor');
             content = content.replace(/__OWNER_PHOTO_URL__/g, process.env.OWNER_PHOTO_URL || 'https://cardscanner.tbhavar.in/profile.jpg');
