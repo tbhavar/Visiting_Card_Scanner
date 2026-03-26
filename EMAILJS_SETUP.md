@@ -49,9 +49,12 @@ Follow these steps to configure the email feature for your Card Scanner app.
       <p style="margin: 8px 0; color: #555;"><strong>Website:</strong> <a href="https://{{website_url}}" style="color: #6c63ff; text-decoration: none;">{{website_url}}</a></p>
     </div>
     
-    <div style="text-align: center; margin: 25px 0;">
-      <a href="{{linkedin_url}}" style="display: inline-block; background: #0077B5; color: white; padding: 12px 30px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px;">
+    <div style="text-align: center; margin: 25px 0; display: flex; flex-direction: column; align-items: center; gap: 15px;">
+      <a href="{{linkedin_url}}" style="display: inline-block; background: #0077B5; color: white; padding: 12px 30px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px; min-width: 200px;">
         🔗 Connect on LinkedIn
+      </a>
+      <a href="{{vcf_url}}" style="display: inline-block; background: #28a745; color: white; padding: 12px 30px; border-radius: 6px; text-decoration: none; font-weight: bold; font-size: 15px; min-width: 200px;">
+        💾 Save Contact (VCF)
       </a>
     </div>
     
@@ -103,6 +106,7 @@ Add these secrets:
 | `OWNER_LINKEDIN` | `https://www.linkedin.com/in/tbhavar/` |
 | `OWNER_WEBSITE` | `tbhavar.in` |
 | `OWNER_TITLE` | `Chartered Accountant | GST & Tax Consultant` |
+| `OWNER_VCF_URL` | `https://cardscanner.tbhavar.in/assets/contacts.vcf` |
 
 ## 6. Enable GitHub Pages
 
@@ -129,5 +133,6 @@ Add these secrets:
 | `{{linkedin_url}}` | `OWNER_LINKEDIN` secret |
 | `{{website_url}}` | `OWNER_WEBSITE` secret |
 | `{{owner_title}}` | `OWNER_TITLE` secret |
+| `{{vcf_url}}` | `OWNER_VCF_URL` secret |
 | `{{meeting_notes}}` | Notes field from the app |
 | `{{business_name}}` | Scanned business name |
