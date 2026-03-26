@@ -16,10 +16,10 @@ const APP_CONFIG = {
     OWNER_EMAIL: '__OWNER_EMAIL__',
     OWNER_PHONE: '__OWNER_PHONE__',
     OWNER_LINKEDIN: '__OWNER_LINKEDIN__',
-    OWNER_WEBSITE: '__OWNER_WEBSITE__',
-    OWNER_TITLE: '__OWNER_TITLE__',
-    OWNER_VCF_URL: '__OWNER_VCF_URL__',
-    OWNER_PHOTO_URL: '__OWNER_PHOTO_URL__',
+    OWNER_WEBSITE: 'tbhavar.in',
+    OWNER_TITLE: 'Chartered Accountant | Corporate Law, GST & Income Tax Advisor',
+    OWNER_VCF_URL: 'https://cardscanner.tbhavar.in/assets/contacts.vcf',
+    OWNER_PHOTO_URL: 'https://cardscanner.tbhavar.in/profile.jpg',
 
     GOOGLE_SHEETS_URL: '__GOOGLE_SHEETS_URL__'
 };

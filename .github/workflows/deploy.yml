@@ -42,6 +42,9 @@ jobs:
             content = content.replace(/__OWNER_EMAIL__/g, process.env.OWNER_EMAIL || '');
             content = content.replace(/__OWNER_PHONE__/g, process.env.OWNER_PHONE || '');
             content = content.replace(/__OWNER_LINKEDIN__/g, process.env.OWNER_LINKEDIN || '');
+            content = content.replace(/__OWNER_WEBSITE__/g, process.env.OWNER_WEBSITE || 'tbhavar.in');
+            content = content.replace(/__OWNER_TITLE__/g, process.env.OWNER_TITLE || 'Chartered Accountant | Corporate Law, GST & Income Tax Advisor');
+            content = content.replace(/__OWNER_PHOTO_URL__/g, process.env.OWNER_PHOTO_URL || 'https://cardscanner.tbhavar.in/profile.jpg');
             content = content.replace(/__GOOGLE_SHEETS_URL__/g, process.env.GOOGLE_SHEETS_URL || '');
             
             fs.writeFileSync(path, content);
@@ -56,6 +59,9 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           OWNER_PHONE: ${{ secrets.OWNER_PHONE }}
           OWNER_LINKEDIN: ${{ secrets.OWNER_LINKEDIN }}
+          OWNER_WEBSITE: ${{ secrets.OWNER_WEBSITE }}
+          OWNER_TITLE: ${{ secrets.OWNER_TITLE }}
+          OWNER_PHOTO_URL: ${{ secrets.OWNER_PHOTO_URL }}
           GOOGLE_SHEETS_URL: ${{ secrets.GOOGLE_SHEETS_URL }}
 
       - name: Setup Pages
