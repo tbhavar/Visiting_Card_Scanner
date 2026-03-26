@@ -107,21 +107,32 @@ const App = (() => {
 
     function handleFiles(files) {
         if (!files || files.length === 0) return;
-        const file = files[0];
-        if (!file.type.startsWith('image/')) {
-            showToast('Please upload an image file.', 'error');
-            return;
-        }
+        
+        // Convert FileList to Array for easier iteration
+        const fileArray = Array.from(files);
+        
+        showToast(`Processing ${fileArray.length} card(s)...`, 'info');
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            currentImageDataUrl = e.target.result;
-            els.imagePreview.src = currentImageDataUrl;
-            els.previewContainer.classList.remove('hidden');
-            els.dropZone.classList.add('has-image');
-            processImage(file);
-        };
-        reader.readAsDataURL(file);
+        fileArray.forEach(file => {
+            if (!file.type.startsWith('image/')) {
+                showToast(`Skipping non-image file: ${file.name}`, 'warning');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                // For batch mode, we don't necessarily update the preview for every file immediately
+                // but we process each one.
+                if (fileArray.length === 1) {
+                    currentImageDataUrl = e.target.result;
+                    els.imagePreview.src = currentImageDataUrl;
+                    els.previewContainer.classList.remove('hidden');
+                    els.dropZone.classList.add('has-image');
+                }
+                processImage(file);
+            };
+            reader.readAsDataURL(file);
+        });
     }
 
     function setupDragDrop() {
@@ -234,22 +245,22 @@ const App = (() => {
     }
 
     // ---- Card actions ----
-    function handleSave() {
+    async function handleSave() {
         const data = getFormData();
         if (!data.personName && !data.businessName) {
             showToast('Please fill at least a name or business name.', 'error');
             return;
         }
-        Storage.save(data);
+        await Storage.save(data);
         showToast('Contact saved locally!');
         
         // Auto-sync if enabled
-        if (Storage.isSheetsConfigured()) {
-            Storage.syncToSheet();
+        if (Storage.isSheetsConfigured() && navigator.onLine) {
+            await Storage.syncToSheet();
         }
 
         clearForm();
-        renderCards();
+        await renderCards();
     }
 
     function handleDownloadVcf() {
@@ -269,6 +280,14 @@ const App = (() => {
             return;
         }
 
+        // If offline, add to outbox
+        if (!navigator.onLine) {
+            await Storage.addToOutbox(data);
+            showToast('Added to email outbox (will send when online).');
+            clearForm();
+            return;
+        }
+
         els.btnSendEmail.disabled = true;
         els.btnSendEmail.innerHTML = '<span class="spinner"></span> Sending...';
 
@@ -284,11 +303,23 @@ const App = (() => {
     }
 
     // ---- Cards list rendering ----
-    function renderCards(query) {
-        const cards = query ? Storage.search(query) : Storage.getAll();
+    async function renderCards(query) {
+        let cards = [];
+        try {
+            cards = query ? await Storage.search(query) : await Storage.getAll();
+        } catch (e) {
+            console.error('Storage error:', e);
+        }
+        
         els.cardsContainer.innerHTML = '';
 
-        if (cards.length === 0) {
+        // Also check for pending scans
+        const pendingScans = await Storage.getPendingScans();
+        if (pendingScans.length > 0) {
+            renderPendingScans(pendingScans);
+        }
+
+        if (cards.length === 0 && pendingScans.length === 0) {
             els.emptyState.classList.remove('hidden');
             els.btnDownloadAll.classList.add('hidden');
             return;
@@ -303,9 +334,26 @@ const App = (() => {
         });
     }
 
+    function renderPendingScans(scans) {
+        scans.forEach(scan => {
+            const div = document.createElement('div');
+            div.className = 'card-item pending-card';
+            div.innerHTML = `
+                <div style="display:flex; align-items:center; gap:12px; opacity: 0.7;">
+                    <div class="spinner-small"></div>
+                    <div>
+                        <h3 style="margin:0; font-size: 15px;">Pending Capture...</h3>
+                        <p style="margin:0; font-size:12px; color:var(--text-muted)">Waiting for network to scan card</p>
+                    </div>
+                </div>
+            `;
+            els.cardsContainer.appendChild(div);
+        });
+    }
+
     function createCardElement(card) {
         const div = document.createElement('div');
-        div.className = 'card-item';
+        div.className = `card-item ${card.synced === 0 ? 'unsynced' : ''}`;
         div.dataset.id = card.id;
 
         const initials = (card.personName || 'C').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
@@ -317,6 +365,7 @@ const App = (() => {
                     <h3 class="card-name">${escapeHTML(card.personName || 'Unknown')}</h3>
                     <p class="card-business">${escapeHTML(card.businessName || '')}</p>
                 </div>
+                ${card.synced === 0 ? '<div class="sync-badge" title="Not synced to cloud"></div>' : ''}
             </div>
             <div class="card-details">
                 ${card.mobile1 ? `<span class="card-detail"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> ${escapeHTML(card.mobile1)}</span>` : ''}
@@ -345,8 +394,8 @@ const App = (() => {
         return div.innerHTML;
     }
 
-    function downloadCardVcf(id) {
-        const card = Storage.getById(id);
+    async function downloadCardVcf(id) {
+        const card = await Storage.getById(id);
         if (card) {
             VCF.downloadVCF(card);
             showToast('VCF downloaded!');
@@ -354,8 +403,15 @@ const App = (() => {
     }
 
     async function sendCardEmail(id) {
-        const card = Storage.getById(id);
+        const card = await Storage.getById(id);
         if (card && card.email) {
+            // Handle offline
+            if (!navigator.onLine) {
+                await Storage.addToOutbox(card);
+                showToast('Added to email outbox.');
+                return;
+            }
+
             try {
                 await EmailService.sendIntroductionEmail(card);
                 showToast('Email sent successfully!');
@@ -365,16 +421,16 @@ const App = (() => {
         }
     }
 
-    function deleteCard(id) {
+    async function deleteCard(id) {
         if (confirm('Delete this contact?')) {
-            Storage.remove(id);
-            renderCards();
+            await Storage.remove(id);
+            await renderCards();
             showToast('Contact deleted.');
         }
     }
 
-    function handleDownloadAll() {
-        const cards = Storage.getAll();
+    async function handleDownloadAll() {
+        const cards = await Storage.getAll();
         if (cards.length === 0) {
             showToast('No contacts to download.', 'error');
             return;
@@ -389,6 +445,7 @@ const App = (() => {
         try {
             await Storage.syncToSheet();
             showToast('Backup successful!', 'success');
+            await renderCards(); // Refresh to hide sync badges
         } catch (err) {
             showToast('Backup failed: ' + err.message, 'error');
         } finally {
@@ -407,7 +464,7 @@ const App = (() => {
         els.btnSyncFromCloud.textContent = 'Restoring...';
         try {
             const data = await Storage.restoreFromSheet();
-            renderCards();
+            await renderCards();
             showToast(`Restored ${data.length} contacts!`, 'success');
         } catch (err) {
             showToast('Restore failed: ' + err.message, 'error');
@@ -420,8 +477,81 @@ const App = (() => {
         }
     }
 
+    // ---- Auto-OCR Integration ----
+    async function processImage(file) {
+        els.contactForm.classList.add('hidden');
+        els.ocrProgress.classList.remove('hidden');
+        els.rawTextOutput.classList.add('hidden');
+
+        // Handle Offline Flow
+        if (!navigator.onLine) {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                await Storage.addPendingScan(e.target.result);
+                els.ocrProgress.classList.add('hidden');
+                showToast('Offline: Image saved for auto-scan when online.', 'info');
+                clearForm();
+                await renderCards();
+            };
+            reader.readAsDataURL(file);
+            return;
+        }
+
+        try {
+            const parsedData = await OCR.scanImage(file);
+            populateForm(parsedData);
+        } catch (err) {
+            showToast('Scan failed: ' + err.message, 'error');
+        } finally {
+            els.ocrProgress.classList.add('hidden');
+        }
+    }
+
+    // Background Sync Monitor
+    function setupConnectivityMonitor() {
+        window.addEventListener('online', async () => {
+            showToast('Back online! Processing pending tasks...', 'info');
+            await processPendingTasks();
+        });
+    }
+
+    async function processPendingTasks() {
+        // 1. Process Pending Scans (Cloud OCR)
+        const scans = await Storage.getPendingScans();
+        for (const scan of scans) {
+            try {
+                // Convert base64 to File/Blob for OCR
+                const res = await fetch(scan.image);
+                const blob = await res.blob();
+                const parsedData = await OCR.scanImage(blob);
+                await Storage.save(parsedData);
+                await Storage.removePendingScan(scan.id);
+            } catch (e) {
+                console.error('Pending scan failed:', e);
+            }
+        }
+
+        // 2. Process Outbox Emails
+        const emails = await Storage.getOutbox();
+        for (const email of emails) {
+            try {
+                await EmailService.sendIntroductionEmail(email);
+                await Storage.markAsSent(email.id);
+            } catch (e) {
+                console.error('Outbox send failed:', e);
+            }
+        }
+
+        // 3. Auto-Sync to Sheets if configured
+        if (Storage.isSheetsConfigured()) {
+            await Storage.syncToSheet();
+        }
+
+        await renderCards();
+    }
+
     // ---- Initialize ----
-    function init() {
+    async function init() {
         cacheElements();
         checkAuth();
 
@@ -453,10 +583,16 @@ const App = (() => {
         els.btnDownloadAll.addEventListener('click', handleDownloadAll);
 
         // Render saved cards
-        renderCards();
+        await renderCards();
 
         // Init EmailJS
         EmailService.init();
+
+        // Setup Connectivity Monitor
+        setupConnectivityMonitor();
+        if (navigator.onLine) {
+            processPendingTasks();
+        }
     }
 
     document.addEventListener('DOMContentLoaded', init);

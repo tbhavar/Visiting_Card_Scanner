@@ -1,65 +1,130 @@
 // ============================================================
-// storage.js — localStorage CRUD for scanned cards
+// storage.js — IndexedDB (via Dexie.js) CRUD for scanned cards
 // ============================================================
 
 const Storage = (() => {
-    const STORAGE_KEY = 'vcscanner_cards';
+    // ---- Database Initialization ----
+    const db = new Dexie('CardScannerDB');
+    
+    // Schema: 
+    // - contacts: All saved contacts (synced/unsynced)
+    // - pendingScans: Images captured offline waiting for OCR
+    // - outbox: Emails waiting for batch sending
+    db.version(1).stores({
+        contacts: '++id, personName, businessName, email, synced, createdAt',
+        pendingScans: '++id, image, createdAt',
+        outbox: '++id, to_email, to_name, sent, createdAt'
+    });
 
-    function getAll() {
-        try {
-            const data = localStorage.getItem(STORAGE_KEY);
-            return data ? JSON.parse(data) : [];
-        } catch {
-            return [];
+    // ---- Migration from localStorage ----
+    async function migrateFromLocalStorage() {
+        const OLD_STORAGE_KEY = 'vcscanner_cards';
+        const oldData = localStorage.getItem(OLD_STORAGE_KEY);
+        if (oldData) {
+            try {
+                const cards = JSON.parse(oldData);
+                if (Array.isArray(cards) && cards.length > 0) {
+                    // Import only if the target table is empty to avoid duplicates
+                    const count = await db.contacts.count();
+                    if (count === 0) {
+                        const contactsToImport = cards.map(c => ({
+                            ...c,
+                            synced: 0 // Assume old cards are unsynced
+                        }));
+                        await db.contacts.bulkAdd(contactsToImport);
+                        console.log('Migrated data from localStorage to IndexedDB');
+                        // Optional: Clear old storage after successful migration
+                        // localStorage.removeItem(OLD_STORAGE_KEY);
+                    }
+                }
+            } catch (e) {
+                console.error('Migration failed:', e);
+            }
         }
     }
 
-    function save(contact) {
-        const cards = getAll();
+    migrateFromLocalStorage();
+
+    // ---- Contact Methods (Async) ----
+    async function getAll() {
+        return await db.contacts.orderBy('createdAt').reverse().toArray();
+    }
+
+    async function save(contact) {
         const card = {
-            id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
             ...contact,
+            synced: 0,
             createdAt: new Date().toISOString()
         };
-        cards.unshift(card);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+        const id = await db.contacts.add(card);
+        card.id = id;
         return card;
     }
 
-    function update(id, updatedContact) {
-        const cards = getAll();
-        const idx = cards.findIndex(c => c.id === id);
-        if (idx !== -1) {
-            cards[idx] = { ...cards[idx], ...updatedContact };
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
-            return cards[idx];
-        }
-        return null;
+    async function update(id, updatedContact) {
+        const numericId = parseInt(id, 10);
+        await db.contacts.update(id, updatedContact);
+        return await db.contacts.get(id);
     }
 
-    function remove(id) {
-        const cards = getAll().filter(c => c.id !== id);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+    async function remove(id) {
+        await db.contacts.delete(id);
     }
 
-    function getById(id) {
-        return getAll().find(c => c.id === id) || null;
+    async function getById(id) {
+        return await db.contacts.get(id);
     }
 
-    function search(query) {
-        if (!query) return getAll();
+    async function search(query) {
+        if (!query) return await getAll();
         const q = query.toLowerCase();
-        return getAll().filter(c =>
-            (c.personName && c.personName.toLowerCase().includes(q)) ||
-            (c.businessName && c.businessName.toLowerCase().includes(q)) ||
-            (c.email && c.email.toLowerCase().includes(q)) ||
-            (c.mobile1 && c.mobile1.includes(q)) ||
-            (c.notes && c.notes.toLowerCase().includes(q))
-        );
+        return await db.contacts
+            .filter(c => 
+                (c.personName && c.personName.toLowerCase().includes(q)) ||
+                (c.businessName && c.businessName.toLowerCase().includes(q)) ||
+                (c.email && c.email.toLowerCase().includes(q)) ||
+                (c.mobile1 && c.mobile1.includes(q)) ||
+                (c.notes && c.notes.toLowerCase().includes(q))
+            )
+            .reverse()
+            .toArray();
     }
 
-    function clearAll() {
-        localStorage.removeItem(STORAGE_KEY);
+    async function clearAll() {
+        await db.contacts.clear();
+    }
+
+    // ---- Pending Scan Methods ----
+    async function addPendingScan(image) {
+        return await db.pendingScans.add({
+            image, // Base64 or Blob
+            createdAt: new Date().toISOString()
+        });
+    }
+
+    async function getPendingScans() {
+        return await db.pendingScans.toArray();
+    }
+
+    async function removePendingScan(id) {
+        await db.pendingScans.delete(id);
+    }
+
+    // ---- Outbox Methods ----
+    async function addToOutbox(emailParams) {
+        return await db.outbox.add({
+            ...emailParams,
+            sent: 0,
+            createdAt: new Date().toISOString()
+        });
+    }
+
+    async function getOutbox() {
+        return await db.outbox.where('sent').equals(0).toArray();
+    }
+
+    async function markAsSent(id) {
+        await db.outbox.update(id, { sent: 1 });
     }
 
     // ---- Google Sheets Integration ----
@@ -69,15 +134,13 @@ const Storage = (() => {
 
     async function syncToSheet() {
         if (!isSheetsConfigured()) return;
-        const cards = getAll();
-        
-        // Use the auth hash as a simple security token so the script only accepts requests from his app
+        const cards = await getAll();
         const authHash = APP_CONFIG.AUTH_HASH;
 
         try {
-            const response = await fetch(APP_CONFIG.GOOGLE_SHEETS_URL, {
+            await fetch(APP_CONFIG.GOOGLE_SHEETS_URL, {
                 method: 'POST',
-                mode: 'no-cors', // Use no-cors as Apps Script redirects often cause CORS issues
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ 
                     action: 'sync_to_sheet',
@@ -85,6 +148,8 @@ const Storage = (() => {
                     data: cards 
                 })
             });
+            // Mark as synced locally
+            await db.contacts.toCollection().modify({ synced: 1 });
             return true;
         } catch (err) {
             console.error('Sheets Sync Failed:', err);
@@ -97,12 +162,8 @@ const Storage = (() => {
         const authHash = APP_CONFIG.AUTH_HASH;
 
         try {
-            // Since we can't easily do CORS GET for data from Apps Script no-cors mode, 
-            // we'll use a POST for retrieval too.
             const response = await fetch(APP_CONFIG.GOOGLE_SHEETS_URL, {
                 method: 'POST',
-                // mode: 'cors' — For reading data, we need CORS. 
-                // We'll instruct the user to handle this in the Apps Script Guide.
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
                 body: JSON.stringify({ 
                     action: 'load_from_sheet',
@@ -113,8 +174,8 @@ const Storage = (() => {
             const remoteData = JSON.parse(text);
             
             if (Array.isArray(remoteData)) {
-                // Merge or Replace? Let's replace for now to ensure clean restore.
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(remoteData));
+                await db.contacts.clear();
+                await db.contacts.bulkAdd(remoteData);
                 return remoteData;
             }
             return [];
@@ -126,6 +187,8 @@ const Storage = (() => {
 
     return { 
         getAll, save, update, remove, getById, search, clearAll, 
+        addPendingScan, getPendingScans, removePendingScan,
+        addToOutbox, getOutbox, markAsSent,
         isSheetsConfigured, syncToSheet, restoreFromSheet 
     };
 })();
