@@ -12,14 +12,14 @@ const APP_CONFIG = {
     EMAILJS_SERVICE_ID: '__EMAILJS_SERVICE_ID__',
     EMAILJS_TEMPLATE_ID: '__EMAILJS_TEMPLATE_ID__',
 
-    OWNER_NAME: 'CA Tanmay Rajendra Bhavar',
-    OWNER_EMAIL: 'catanmaybhavar@gmail.com',
-    OWNER_PHONE: '8329213804, 9168026111',
-    OWNER_LINKEDIN: 'https://www.linkedin.com/in/tbhavar/',
-    OWNER_WEBSITE: 'tbhavar.in',
-    OWNER_TITLE: 'Chartered Accountant | GST & Tax Consultant',
-    OWNER_VCF_URL: 'https://cardscanner.tbhavar.in/assets/contacts.vcf',
-    OWNER_PHOTO_URL: 'https://raw.githubusercontent.com/tbhavar/Visiting_Card_Scanner/main/profile.jpg',
+    OWNER_NAME: '__OWNER_NAME__',
+    OWNER_EMAIL: '__OWNER_EMAIL__',
+    OWNER_PHONE: '__OWNER_PHONE__',
+    OWNER_LINKEDIN: '__OWNER_LINKEDIN__',
+    OWNER_WEBSITE: '__OWNER_WEBSITE__',
+    OWNER_TITLE: '__OWNER_TITLE__',
+    OWNER_VCF_URL: '__OWNER_VCF_URL__',
+    OWNER_PHOTO_URL: '__OWNER_PHOTO_URL__',
 
     GOOGLE_SHEETS_URL: '__GOOGLE_SHEETS_URL__'
 };

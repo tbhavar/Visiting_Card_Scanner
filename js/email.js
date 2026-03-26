@@ -49,6 +49,9 @@ const EmailService = (() => {
             meeting_notes: contact.notes || 'our recent meeting',
             business_name: contact.businessName || ''
         };
+        
+        console.log('--- Email Template Params ---');
+        console.log(templateParams);
 
         const response = await emailjs.send(
             APP_CONFIG.EMAILJS_SERVICE_ID,
