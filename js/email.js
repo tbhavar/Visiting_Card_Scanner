@@ -20,7 +20,7 @@ const EmailService = (() => {
     }
 
     function sanitizeConfigValue(val) {
-        if (!val || val.startsWith('__')) return '';
+        if (!val || typeof val !== 'string' || val.includes('__')) return '';
         return val;
     }
 
