@@ -2,7 +2,7 @@
 // sw.js — Service Worker for Card Scanner PWA
 // ============================================================
 
-const CACHE_NAME = 'card-scanner-v1';
+const CACHE_NAME = 'card-scanner-v1.1';
 const STATIC_ASSETS = [
     './',
     './index.html',
@@ -17,7 +17,8 @@ const STATIC_ASSETS = [
     './js/app.js',
     './manifest.json',
     './icons/icon-192.png',
-    './icons/icon-512.png'
+    './icons/icon-512.png',
+    './profile.jpg'
 ];
 
 // Install — cache app shell
@@ -40,12 +41,12 @@ self.addEventListener('activate', event => {
     );
 });
 
-// Fetch — cache-first for static, network-first for CDN
+// Fetch — Stale-While-Revalidate for local, Network-first for CDN
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
 
     // Network-first for CDN resources (Tesseract, EmailJS)
-    if (url.hostname.includes('cdn.jsdelivr.net') || url.hostname.includes('unpkg.com')) {
+    if (url.hostname.includes('cdn.jsdelivr.net') || url.hostname.includes('unpkg.com') || url.hostname.includes('emailjs.com')) {
         event.respondWith(
             fetch(event.request)
                 .then(response => {
@@ -58,9 +59,16 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // Cache-first for local assets
+    // Stale-While-Revalidate for local assets
     event.respondWith(
-        caches.match(event.request)
-            .then(cached => cached || fetch(event.request))
+        caches.open(CACHE_NAME).then(cache => {
+            return cache.match(event.request).then(response => {
+                const fetchPromise = fetch(event.request).then(networkResponse => {
+                    cache.put(event.request, networkResponse.clone());
+                    return networkResponse;
+                });
+                return response || fetchPromise;
+            });
+        })
     );
 });

@@ -1,9 +1,9 @@
 {
-    "name": "Card Scanner — Visiting Card to Contact",
-    "short_name": "Card Scanner",
+    "name": "Visiting Card Scanner",
+    "short_name": "CardScanner",
     "description": "Scan visiting cards, extract contact details with OCR, and export as VCF files.",
-    "start_url": "/Visiting_Card_Scanner/",
-    "scope": "/Visiting_Card_Scanner/",
+    "start_url": "./index.html",
+    "scope": "./",
     "display": "standalone",
     "orientation": "any",
     "theme_color": "#0f0f1a",

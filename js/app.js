@@ -58,7 +58,8 @@ const App = (() => {
             btnShareNow: document.getElementById('btn-share-now'),
 
             toast: document.getElementById('toast'),
-            toastMessage: document.getElementById('toast-message')
+            toastMessage: document.getElementById('toast-message'),
+            btnInstall: document.getElementById('pwa-install')
         };
     }
 
@@ -608,9 +609,52 @@ const App = (() => {
         await renderCards();
     }
 
+    // ---- PWA Actions ----
+    let deferredPrompt;
+
+    function setupPWA() {
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered'))
+                    .catch(err => console.log('SW failed', err));
+            });
+        }
+
+        // Handle install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (els.btnInstall) {
+                els.btnInstall.classList.remove('hidden');
+            }
+        });
+
+        if (els.btnInstall) {
+            els.btnInstall.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    els.btnInstall.classList.add('hidden');
+                }
+                deferredPrompt = null;
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            if (els.btnInstall) {
+                els.btnInstall.classList.add('hidden');
+            }
+            showToast('App installed successfully!');
+        });
+    }
+
     // ---- Initialize ----
     async function init() {
         cacheElements();
+        setupPWA();
         checkAuth();
 
         // Auth

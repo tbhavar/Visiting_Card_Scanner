@@ -274,16 +274,48 @@ body::before {
 }
 
 .app-header {
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 100;
     background: rgba(15, 15, 26, 0.85);
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.btn-install {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.btn-install:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-install svg {
+    width: 16px;
+    height: 16px;
 }
 
 .app-header .brand {
@@ -864,8 +896,10 @@ body::before {
 /* Laptop / Desktop (1024px+) */
 @media (min-width: 1024px) {
     .main-content {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1.1fr 0.9fr;
         align-items: start;
+        gap: 2.5rem;
+        padding: 2.5rem;
     }
 
     .section-upload {
@@ -875,19 +909,28 @@ body::before {
 
     .section-cards {
         grid-column: 2;
-        grid-row: 1 / span 2;
+        grid-row: 1 / span 10;
         position: sticky;
-        top: 80px;
-        max-height: calc(100vh - 100px);
+        top: 100px;
+        max-height: calc(100vh - 140px);
         overflow-y: auto;
+        padding-right: 0.5rem;
+    }
+
+    /* Custom scrollbar for history sidebar */
+    .section-cards::-webkit-scrollbar {
+        width: 6px;
+    }
+    .section-cards::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .section-cards::-webkit-scrollbar-thumb {
+        background: var(--bg-input);
+        border-radius: 10px;
     }
 
     .cards-container {
         grid-template-columns: 1fr;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr 1fr;
     }
 }
 
