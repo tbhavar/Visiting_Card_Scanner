@@ -29,6 +29,7 @@ Follow these steps to configure the email feature for your Card Scanner app.
   
   <div style="background: linear-gradient(135deg, #6c63ff 0%, #e363ff 100%); padding: 30px; text-align: center;">
     <h1 style="color: white; margin: 0; font-size: 24px;">Great connecting with you!</h1>
+    <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 14px;">{{owner_title}}</p>
   </div>
   
   <div style="padding: 30px;">
@@ -45,6 +46,7 @@ Follow these steps to configure the email feature for your Card Scanner app.
       <p style="margin: 8px 0; color: #555;"><strong>Name:</strong> {{from_name}}</p>
       <p style="margin: 8px 0; color: #555;"><strong>Email:</strong> {{from_email}}</p>
       <p style="margin: 8px 0; color: #555;"><strong>Phone:</strong> {{from_phone}}</p>
+      <p style="margin: 8px 0; color: #555;"><strong>Website:</strong> <a href="https://{{website_url}}" style="color: #6c63ff; text-decoration: none;">{{website_url}}</a></p>
     </div>
     
     <div style="text-align: center; margin: 25px 0;">
@@ -97,8 +99,10 @@ Add these secrets:
 | `EMAILJS_TEMPLATE_ID` | Your Template ID from step 3 |
 | `OWNER_NAME` | `Your Full Name` |
 | `OWNER_EMAIL` | `your.email@gmail.com` |
-| `OWNER_PHONE` | `+1 234 567 8900` |
-| `OWNER_LINKEDIN` | `https://www.linkedin.com/in/your-profile/` |
+| `OWNER_PHONE` | `+91 98765 43210` |
+| `OWNER_LINKEDIN` | `https://www.linkedin.com/in/tbhavar/` |
+| `OWNER_WEBSITE` | `tbhavar.in` |
+| `OWNER_TITLE` | `Chartered Accountant | GST & Tax Consultant` |
 
 ## 6. Enable GitHub Pages
 
@@ -123,5 +127,7 @@ Add these secrets:
 | `{{from_email}}` | `OWNER_EMAIL` secret |
 | `{{from_phone}}` | `OWNER_PHONE` secret |
 | `{{linkedin_url}}` | `OWNER_LINKEDIN` secret |
+| `{{website_url}}` | `OWNER_WEBSITE` secret |
+| `{{owner_title}}` | `OWNER_TITLE` secret |
 | `{{meeting_notes}}` | Notes field from the app |
 | `{{business_name}}` | Scanned business name |

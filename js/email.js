@@ -37,6 +37,8 @@ const EmailService = (() => {
             from_email: APP_CONFIG.OWNER_EMAIL,
             from_phone: APP_CONFIG.OWNER_PHONE,
             linkedin_url: APP_CONFIG.OWNER_LINKEDIN,
+            website_url: APP_CONFIG.OWNER_WEBSITE,
+            owner_title: APP_CONFIG.OWNER_TITLE,
             meeting_notes: contact.notes || 'our recent meeting',
             business_name: contact.businessName || ''
         };
