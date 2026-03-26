@@ -19,6 +19,11 @@ const EmailService = (() => {
                APP_CONFIG.EMAILJS_TEMPLATE_ID && APP_CONFIG.EMAILJS_TEMPLATE_ID !== '__EMAILJS_TEMPLATE_ID__';
     }
 
+    function sanitizeConfigValue(val) {
+        if (!val || val.startsWith('__')) return '';
+        return val;
+    }
+
     async function sendIntroductionEmail(contact) {
         if (!isConfigured()) {
             throw new Error('EmailJS is not configured. Please set up GitHub Secrets.');
@@ -33,14 +38,14 @@ const EmailService = (() => {
         const templateParams = {
             to_email: contact.email,
             to_name: contact.personName || 'there',
-            from_name: APP_CONFIG.OWNER_NAME,
-            from_email: APP_CONFIG.OWNER_EMAIL,
-            from_phone: APP_CONFIG.OWNER_PHONE,
-            linkedin_url: APP_CONFIG.OWNER_LINKEDIN,
-            website_url: APP_CONFIG.OWNER_WEBSITE,
-            owner_title: APP_CONFIG.OWNER_TITLE,
-            vcf_url: APP_CONFIG.OWNER_VCF_URL,
-            photo_url: APP_CONFIG.OWNER_PHOTO_URL,
+            from_name: sanitizeConfigValue(APP_CONFIG.OWNER_NAME) || 'Your Contact',
+            from_email: sanitizeConfigValue(APP_CONFIG.OWNER_EMAIL),
+            from_phone: sanitizeConfigValue(APP_CONFIG.OWNER_PHONE),
+            linkedin_url: sanitizeConfigValue(APP_CONFIG.OWNER_LINKEDIN),
+            website_url: sanitizeConfigValue(APP_CONFIG.OWNER_WEBSITE),
+            owner_title: sanitizeConfigValue(APP_CONFIG.OWNER_TITLE),
+            vcf_url: sanitizeConfigValue(APP_CONFIG.OWNER_VCF_URL),
+            photo_url: sanitizeConfigValue(APP_CONFIG.OWNER_PHOTO_URL),
             meeting_notes: contact.notes || 'our recent meeting',
             business_name: contact.businessName || ''
         };
