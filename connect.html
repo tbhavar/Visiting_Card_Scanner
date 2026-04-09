@@ -15,7 +15,7 @@
     <style>
         /* Specific overrides for the Connect page */
         .connect-container {
-            max-width: 500px;
+            max-width: 600px;
             margin: 2rem auto;
             padding: 1rem;
         }
@@ -71,6 +71,12 @@
             display: inline-block;
             margin: 1.5rem 0;
         }
+
+        @media (min-width: 640px) {
+            .full-width {
+                grid-column: 1 / -1;
+            }
+        }
     </style>
 </head>
 
@@ -110,7 +116,7 @@
                         <label for="visitor-mobile">Mobile Number</label>
                         <input type="tel" id="visitor-mobile" placeholder="Your contact number" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group full-width">
                         <label for="visitor-meeting">Where did we meet?</label>
                         <textarea id="visitor-meeting" placeholder="e.g., TiE Conference, Pune Event, etc."></textarea>
                     </div>
