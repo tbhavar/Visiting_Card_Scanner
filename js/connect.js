@@ -58,7 +58,6 @@ async function handleFormSubmit(e) {
     const visitorData = {
         name: document.getElementById('visitor-name').value,
         email: document.getElementById('visitor-email').value,
-        mobile: document.getElementById('visitor-mobile').value,
         meeting: document.getElementById('visitor-meeting').value,
         timestamp: new Date().toLocaleString('en-IN')
     };

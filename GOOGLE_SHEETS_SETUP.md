@@ -62,13 +62,12 @@ function doPost(e) {
       let vSheet = ss.getSheetByName(VISITOR_SHEET);
       if (!vSheet) {
         vSheet = ss.insertSheet(VISITOR_SHEET);
-        vSheet.appendRow(['Name', 'Email', 'Mobile', 'Where_We_Met', 'Timestamp']);
+        vSheet.appendRow(['Name', 'Email', 'Where_We_Met', 'Timestamp']);
       }
       
       vSheet.appendRow([
         data.name || '', 
         data.email || '', 
-        data.mobile || '', 
         data.meeting || '', 
         data.timestamp || new Date().toLocaleString()
       ]);
