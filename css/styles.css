@@ -318,6 +318,33 @@ body::before {
     height: 16px;
 }
 
+.btn-visitor-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--bg-glass);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.btn-visitor-form:hover {
+    border-color: var(--accent);
+    background: rgba(108, 99, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 99, 255, 0.15);
+}
+
+.btn-visitor-form svg {
+    color: var(--accent);
+}
+
 .app-header .brand {
     display: flex;
     align-items: center;

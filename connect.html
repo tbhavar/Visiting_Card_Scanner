@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Connect with CA Tanmay R Bhavar. Leave your details and get my professional contact info.">
+    <meta name="theme-color" content="#0f0f1a">
+
+    <title>Let's Connect — CA Tanmay R Bhavar</title>
+
+    <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        /* Specific overrides for the Connect page */
+        .connect-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            margin: 0 auto 1rem;
+            object-fit: cover;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-title {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .success-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .qr-placeholder {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            display: inline-block;
+            margin: 1.5rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="connect-container">
+        <!-- Profile info at the top -->
+        <div class="profile-header">
+            <img id="owner-photo" src="profile.jpg" alt="CA Tanmay R Bhavar" class="profile-photo">
+            <h1 id="owner-name" class="profile-name">CA Tanmay R Bhavar</h1>
+            <p id="owner-title" class="profile-title">Chartered Accountant | AI Trainer | Tax Advisor</p>
+        </div>
+
+        <!-- Initial Form -->
+        <div id="form-container" class="section">
+            <h2 class="section-title">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
+                Enter Your Details
+            </h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.5rem;">
+                I'll send you my digital business card as soon as you submit.
+            </p>
+
+            <form id="connect-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="visitor-name">Full Name</label>
+                        <input type="text" id="visitor-name" placeholder="How should I address you?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="visitor-email">Email Address</label>
+                        <input type="email" id="visitor-email" placeholder="Where should I send my card?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="visitor-mobile">Mobile Number</label>
+                        <input type="tel" id="visitor-mobile" placeholder="Your contact number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="visitor-meeting">Where did we meet?</label>
+                        <textarea id="visitor-meeting" placeholder="e.g., TiE Conference, Pune Event, etc."></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button type="submit" id="submit-btn" class="btn btn-primary btn-full">
+                        Submit & Share My Info
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success State -->
+        <div id="success-container" class="section success-card hidden">
+            <span class="success-icon">🤝</span>
+            <h2>Nice Meeting You!</h2>
+            <p style="color: var(--text-secondary); margin-top: 1rem;">
+                My professional contact details have been sent to your email.
+            </p>
+            
+            <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+                <a id="btn-save-vcf" href="#" class="btn btn-secondary btn-full">
+                   💾 Save My Contact (VCF)
+                </a>
+                <a id="btn-linkedin" href="#" target="_blank" class="btn btn-primary btn-full">
+                   Connect on LinkedIn
+                </a>
+                <button onclick="location.reload()" class="btn btn-secondary">
+                    Register Another Person
+                </button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer style="text-align: center; margin-top: 3rem; color: var(--text-muted); font-size: 0.8rem;">
+            <p>Built with ❤️ by CA Tanmay R Bhavar</p>
+        </footer>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/email.js"></script>
+    <script src="js/connect.js"></script>
+</body>
+
+</html>

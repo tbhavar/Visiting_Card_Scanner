@@ -37,10 +37,9 @@ function doPost(e) {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName(SHEET_NAME) || ss.getSheets()[0];
 
+    // --- Action: Sync Scanned Contacts (Rewrite) ---
     if (action === 'sync_to_sheet') {
-      // Clear sheet and rewrite with latest contacts
       sheet.clear();
-      // Add Headers
       sheet.appendRow(['ID', 'Name', 'Business', 'Mobile 1', 'Mobile 2', 'Mobile 3', 'Email', 'Address', 'Notes', 'Created At']);
       
       if (data && data.length > 0) {
@@ -56,9 +55,32 @@ function doPost(e) {
         .setMimeType(ContentService.MimeType.JSON);
     } 
     
+    // --- Action: Add Visitor Lead (Append) ---
+    else if (action === 'add_visitor_lead') {
+      // Use a dedicated sheet for visitor leads
+      const VISITOR_SHEET = 'VisitorLeads';
+      let vSheet = ss.getSheetByName(VISITOR_SHEET);
+      if (!vSheet) {
+        vSheet = ss.insertSheet(VISITOR_SHEET);
+        vSheet.appendRow(['Name', 'Email', 'Mobile', 'Where_We_Met', 'Timestamp']);
+      }
+      
+      vSheet.appendRow([
+        data.name || '', 
+        data.email || '', 
+        data.mobile || '', 
+        data.meeting || '', 
+        data.timestamp || new Date().toLocaleString()
+      ]);
+      
+      return ContentService.createTextOutput(JSON.stringify({ success: true }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // --- Action: Load Contacts ---
     else if (action === 'load_from_sheet') {
       const rows = sheet.getDataRange().getValues();
-      const headers = rows.shift(); // Remove headers
+      const headers = rows.shift(); 
       const contacts = rows.map(r => ({
         id: r[0],
         personName: r[1],
